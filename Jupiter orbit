@@ -1,10 +1,14 @@
 The first part of section 3 follow the same step in  two body for jupiter orbit. 
 some genral idea is added below. If the two body was section was done differently, please indicate some changes that might be added to  
-for the jupiter orbit.
+for the jupiter orbit. 
+from scipy.integrate import odeint
 m scale to 1 for sun 
 M = 1 
 eccentricity = 0.048775 = e 
 e = Rmax(alphelion) - Rmin(pheripelion)/ Rmax + rmin
+def (x, y)
+x = GMX/(X^2+y^2)^3/2 
+y = GMY/Y^2+x^2)^3/2
 alphelion for jupiter in y axis = 4.950429  
 coordinate = (0, 495049)
 
