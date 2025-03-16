@@ -1,0 +1,12 @@
+The first part of section 3 follow the same step in  two body for jupiter orbit. 
+some genral idea is added below. If the two body was section was done differently, please indicate some changes that might be added to  
+for the jupiter orbit.
+m scale to 1 for sun 
+M = 1 
+eccentricity = 0.048775 = e 
+e = Rmax(alphelion) - Rmin(pheripelion)/ Rmax + rmin
+alphelion for jupiter in y axis = 4.950429  
+coordinate = (0, 495049)
+
+r in term of planetary orbit in kepler 
+r = r0/ 1 - e*cos(angle)
