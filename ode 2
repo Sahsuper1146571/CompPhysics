@@ -49,14 +49,16 @@ vxj0 = np.sqrt(G*M*(2/Aphelion2-1/semimajor))
 start = [Aphelion, 0, 0, Aphelion2, 0, vxj0, vye0, 0]
 
 # time array
-t = np.linspace(0, 11.859)
+t = np.linspace(0, 12)
 
 sol = solve_ivp(earthjuporb, t_span=[t[0], t[len(
     t)-1]], y0=[Aphelion, 0, 0, Aphelion2, 0, vxj0, vye0, 0], method='Radau', max_step=0.01)
 
 print(sol.y[0])
 
-xesol, xjsol, yesol, yjsol = sol.y[0], sol.y[1], sol.y[2], sol.y[3]
+xesol, xjsol, yesol, yjsol = sol.y[0], sol.y[1], sol.y[2], sol.y[3] 
+ 
+t_interval = np.linspace(0, 11.859, len(xesol))
 
 
 jmassmodifier = 10
@@ -86,41 +88,24 @@ plt.title("Earth Jupiter, Earth close up, Orbit ivp, {}mj".format(jmassmodifier)
 plt.show()
 
 N = len(t)
-print(N)
 
 R = np.sqrt(xesol**2 + yesol**2)
 N1 = len(R)
-print(len(R))
-Alphelion1_position= []
-periphelion1_position = []
-xesol1 = []
-for i in range(N1-1):
-    if xesol[i] < xesol[i-1] and  xesol[i] >= 0 :
+
+xesolA = [] 
+xesolP = [] 
+ 
+j = 0
+for i in range(N1-1): 
+    if xesol[i]*xesol[i-1] < 0 :  
+        j += 1
+        print('number of orbit pass number{}'.format(int(j/2)))
+       
+    if xesol[i] < xesol[i-1] and  xesol[i] < xesol[i+1] :
         print(i)
-        xesol1.append(i)
-    if R[i] < R[i-1] and R[i] < R[i+1]:
-        periphelion1_position.append(i)
-
-xesol2 = xesol[xesol1]
-periphelion1 = R[periphelion1_position]
-
-print(len(xesol2))
+        xesolA.append(i) 
+    if xesol[i] > xesol[i-1] and xesol[i] > xesol[i+1]: 
+        xesolP.append(i)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-#fig = plt.figure(0,0,'ro', label='sun')
-#fig.patch.set_facecolor('xkcd:mint green')
-#plt.plot(fig)
-#plt.show()
+Alphelion1 = np.sqrt(xesol[xesolA]**2 + yesol[xesolA]**2)
