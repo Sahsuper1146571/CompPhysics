@@ -40,21 +40,22 @@ Eccentricity = 0.01671123
 M = 1
 Aphelion = 1.016714
 vye0 = np.sqrt(G*M*(2/Aphelion-1/1))
+vary = 1.1
+V_vary = vye0*vary
 semimajor = 5.204267
 Aphelion2 = 4.950429
 Eccentricity2 = 0.048775
-vxj0 = np.sqrt(G*M*(2/Aphelion2-1/semimajor)) 
- 
-newsemi = 1/(vye0/(G*M) -2/Aphelion) 
-T_period = np.sqrt(4*np.pi*newsemi**3/(G*M))
+vxj0 = np.sqrt(G*M*(2/Aphelion2-1/semimajor))
 
 # starting conditions xe,xj,ye,yj,vxe,vxj,vye,vyj
 start = [Aphelion, 0, 0, Aphelion2, 0, vxj0, vye0, 0]
+newsemi = G*M/(-V_vary**2+2*G*M/Aphelion)
+T_period = np.sqrt(newsemi**3)
 
 # time array
-tm = 700
-step = 550
-t = np.linspace(0, tm, step)
+tmax = 106
+
+t = np.linspace(0, tmax, 550)
 
 sol = solve_ivp(earthjuporb, t_span=[t[0], t[len(
     t)-1]], y0=[Aphelion, 0, 0, Aphelion2, 0, vxj0, vye0, 0], method='Radau')
@@ -90,24 +91,17 @@ plt.legend()
 plt.title("Earth Jupiter, Earth close up, Orbit ivp, {}mj".format(jmassmodifier))
 plt.show()
 
-step_size = len(xesol) 
-tmax = 10
-t_interval = (0, tmax, step_size)  
-N = len(t_interval) 
-print(N)  
-print(step_size) 
-print(tmax) 
-print(int(step_size/tmax))
-print(int(N/(step_size/tmax)))
- 
-s = 14341/(step_size/tmax)
+step = len(xesol)
+t_interval = np.linspace(0, tmax, step)
+N = len(t_interval)
 R = np.sqrt(xesol**2 + yesol**2)
-Alphelion1 = np.zeros(int(N/(step_size*T_period/tmax)))
-periphelion1 = np.zeros(int(N/(step_size*T_period/tmax)))
+Alphelion1 = np.zeros(int(N/(step*T_period/tmax)))
+periphelion1 = np.zeros(int(N/(step*T_period/tmax)))
 for i in range (N):
-        Alphelion1[int(i/(step_size*T_period/tmax))] = np.max(R[i:int(0 + i*(step_size*T_period/tmax))])
-        periphelion1[i/int(step_size*T_period/tmax)] = np.min(R[i:int(0 + i*(step_size*T_period/tmax))])
+        Alphelion1[int(i/(step*T_period/tmax))] = np.max(R[i:i+int(step*T_period/tmax)])
+        periphelion1[int(i/(step*T_period/tmax))] = np.min(R[i:i+int(step*T_period/tmax)])
         i += int(step*T_period/tmax)
 
+time_interval = t[i:i+int(step*T_period/tmax)]
 
 print(len(R))
